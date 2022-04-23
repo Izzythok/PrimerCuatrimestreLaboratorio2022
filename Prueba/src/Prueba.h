@@ -5,14 +5,16 @@
  *      Author: Izzyto
  */
 
+#ifndef PRUEBA_H_
+#define PRUEBA_H_
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+void getFloat(char mensaje[], char mensajeError[], int minimo, int maximo, int *numeroIngresado);
+int myGets(char* cadena, int longitud);
 
-#ifndef PRUEBA_H_
-#define PRUEBA_H_
-
-void getFloat(char mensaje[], char mensajeError[], float minimo, float maximo, float *numeroIngresado);
 
 #endif /* PRUEBA_H_ */

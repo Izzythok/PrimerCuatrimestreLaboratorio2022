@@ -8,9 +8,16 @@
  ============================================================================
  */
 
-#include "Prueba.h";
+#include "Prueba.h"
 
 int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	return EXIT_SUCCESS;
+
+	setbuf(stdout,NULL);
+
+	int numero=0;
+
+	getFloat("ingrese un numero", "Error", -2000, 100000, &numero);
+
+	printf("%d",numero);
+	return 0;
 }

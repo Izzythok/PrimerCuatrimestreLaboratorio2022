@@ -14,10 +14,18 @@ int main(void) {
 
 	setbuf(stdout,NULL);
 
+<<<<<<< HEAD
 	int numero=0;
 
 	getFloat("ingrese un numero", "Error", -2000, 100000, &numero);
 
 	printf("%d",numero);
+=======
+	float numero=0;
+
+	getFloat("ingrese un numero", "Error", -2000, 100000, &numero);
+
+	printf("%d",(int)numero);
+>>>>>>> 53cc4cb (actualizacion 2)
 	return 0;
 }

@@ -11,6 +11,7 @@
 #include "Estructuras.h"
 
 int main(void) {
+
 	setbuf(stdout,NULL);
 
 	//int a;
@@ -19,6 +20,7 @@ int main(void) {
 	getString("ingrese el nombre","Error",3,5, b);
 	//myGets(b, 5);
 	printf("%s\n",b);
+
 
 	return EXIT_SUCCESS;
 }

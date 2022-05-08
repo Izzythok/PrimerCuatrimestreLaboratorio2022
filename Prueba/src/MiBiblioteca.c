@@ -207,7 +207,7 @@ int eProducto_Inicializar(eProducto listaDeProductos[],int longitud)
 		{
 			for(int i=0;i<longitud;i++)
 			{
-				listaDeProductos[i].isEmpty=0;
+				listaDeProductos[i].isEmpty=LIBRE;
 			}
 			return 1;
 		}
@@ -232,7 +232,7 @@ int eProducto_Alta(eProducto listaDeProductos[], int longitud)
 				//SI ESTA TODO BIEN - LE DOY UN ID UNICO
 				auxiliarProducto.id = eProducto_ObtenerIdUnico();
 				//CAMBIO ESTADO A OCUPADO
-				auxiliarProducto.isEmpty = 1;
+				auxiliarProducto.isEmpty = OCUPADO;
 				//PLUS - PREGUNTAR SI ESTA SEGURO
 				//COPIA AUXILIAR EN ARRAY EN POSICION OBTENIDA LIBRE
 				listaDeProductos[indexLibre] = auxiliarProducto;
@@ -261,7 +261,7 @@ int eProducto_BuscarEspacioLibre(eProducto listaDeProductos[], int longitud)
 			//ESTA OK
 			for (i = 0; i < longitud; i++)
 			{
-				if (listaDeProductos[i].isEmpty == 0)
+				if (listaDeProductos[i].isEmpty == LIBRE)
 				{
 					flag = 1;
 					rtn = i;
@@ -290,4 +290,130 @@ eProducto eProducto_CargarUnProducto()
 	return p;
 }
 
+int eProducto_Baja(eProducto listaDeProductos[], int longitud)
+{
+	//-1: si no encontro el ID
+	//0: si salio mal la funcion
+	int rtn = 0;
+	int indexBaja;
 
+	if (listaDeProductos != NULL && longitud>0)
+	{
+			//BUSCA UN INDEX POR ID - RETORNA -1 SI NO ENCUENTRA EL ID EN EL ARRAY
+			indexBaja = eProducto_BuscarIndexPorId(listaDeProductos, longitud);
+			if (indexBaja < 0)
+			{
+				//HUBO UN ERROR BUSCANDO EL INDEX
+				rtn = -1;
+			}
+			else
+			{
+				//SI ENCONTRO ME QUEDO CON EL INDEX Y CAMBIO EL ESTADO
+				//EXTRA - PREGUNTO SI DESEA DAR DE BAJA - ME LO PUEDO GUARDAR EN UN AUX Y MOSTRARLO PREVIO A ELIMINAR
+				listaDeProductos[indexBaja].isEmpty = -1;
+			}
+
+	}
+
+	return rtn;
+}
+
+int eProducto_BuscarIndexPorId(eProducto listaDeProductos[], int longitud)
+{
+	//INDEX: SI ENCONTRO UNO OCUPADO
+	//-1: SI NO ENCONTRO EL ID
+	//0: SI SALIO MAL LA FUNCION
+	int rtn = 0;
+	int flag = 0;
+	int i;
+	int buscarID;
+
+	if (listaDeProductos != NULL && longitud>0)
+	{
+
+			//ESTA OK
+
+			//MUESTRO TODOS - Le muestro al usuario todos los dados de alta para que elija cual ID dar de baja
+			eProducto_imprimirTodos(listaDeProductos, longitud, OCUPADO);
+
+			//PEDIR UN ID
+			getInt("Ingrese el ID: ", "ERROR", 1000, 5000, 3, &buscarID);
+
+			for (i = 0; i < longitud; i++)
+			{
+				if (listaDeProductos[i].isEmpty == OCUPADO)
+				{
+					if (listaDeProductos[i].id == buscarID)
+					{
+						flag = 1;
+						rtn = i; //retorno index del ID que estoy buscando
+						break;
+					}
+				}
+			}
+			if (flag == 0)
+			{
+				rtn = -1;
+			}
+	}
+
+	return rtn;
+}
+
+int eProducto_Modificacion(eProducto listaDeProductos[], int longitud)
+{
+	//-1: si no encontro el ID
+	//0: si salio mal la funcion
+	int rtn = 0;
+	int indexModificacion;
+	eProducto auxiliarProducto;
+
+	if (listaDeProductos != NULL && longitud>0)
+	{
+			//BUSCA UN INDEX POR ID - RETORNA -1 SI NO ENCUENTRA EL ID EN EL ARRAY
+			indexModificacion = eProducto_BuscarIndexPorId(listaDeProductos, longitud);
+			if (indexModificacion < 0)
+			{
+				//HUBO UN ERROR BUSCANDO EL INDEX
+				rtn = -1;
+			}
+			else
+			{
+				auxiliarProducto = listaDeProductos[indexModificacion];
+				//MODIFICAR UN PRODUCTO
+				auxiliarProducto = eProducto_ModificarUnProducto(auxiliarProducto);
+				//EXTRA - PREGUNTO SI DESEA CONFIRMAR - REEMPLAZO LA COPIA POR EL ORIGINAL
+				listaDeProductos[indexModificacion] = auxiliarProducto;
+			}
+
+	}
+
+	return rtn;
+}
+
+eProducto eProducto_ModificarUnProducto(eProducto p)
+{
+
+	int opcion;
+	getInt("Ingrese una opcion a modificar", "Error", 1, 4, 3, &opcion);
+
+	//While - para cargar cuantos datos quiera el usuario
+
+	switch (opcion)
+	{
+	case 1:
+		getInt("Ingrese el dia", "Error", 1, 31, 3, &p.FechaDeVencimiento.dia);
+		break;
+	case 2:
+		getInt("Ingrese el mes", "Error", 1, 12, 3, &p.FechaDeVencimiento.mes);
+		break;
+	case 3:
+		getInt("Ingrese el mes", "Error", 1900, 2022, 3, &p.FechaDeVencimiento.anio);
+		break;
+	case 4:
+		getString("ingrese la marca", "Error", Max_Longitud_Char, p.marca);
+		break;
+	}
+
+	return p;
+}

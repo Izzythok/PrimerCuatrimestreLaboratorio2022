@@ -13,6 +13,9 @@
 #include <stdlib.h>
 #include <string.h>
 #define Max_Longitud_Char 50
+#define OCUPADO 1
+#define LIBRE 0
+#define BAJA -1
 
 typedef struct
 {
@@ -36,6 +39,10 @@ int eProducto_Inicializar(eProducto listaDeProductos[],int longitud);
 int eProducto_BuscarEspacioLibre(eProducto listaDeProductos[], int longitud);
 int eProducto_Alta(eProducto listaDeProductos[], int longitud);
 eProducto eProducto_CargarUnProducto();
+int eProducto_Baja(eProducto listaDeProductos[], int longitud);
+int eProducto_BuscarIndexPorId(eProducto listaDeProductos[], int longitud);
+int eProducto_Modificacion(eProducto listaDeProductos[], int longitud);
+eProducto eProducto_ModificarUnProducto(eProducto p);
 
 
 
